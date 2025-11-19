@@ -21,6 +21,7 @@ public class QuestionService {
     public final OptionRepository optionRepository;
 
     public List<Question> getQuestions(){
+
         return questionRepository.findAll();
     }
 
@@ -45,11 +46,8 @@ public class QuestionService {
         var question = questionRepository.findById(id).orElse(null);
         if(question == null) return null;
         var option = questionMapper.toEntity(request);
-        question.setOptions(List.of(option));
         option.setQuestion(question);
-        questionRepository.save(question);
         optionRepository.save(option);
-
         return questionMapper.toDto(option);
     }
 
@@ -62,7 +60,6 @@ public class QuestionService {
     }
 
     public void removeOption(Long id, Long optionId) {
-        var question = questionRepository.findById(id).orElse(null);
-        var option = optionRepository.findById(optionId).orElse(null);
+        optionRepository.deleteById(optionId);
     }
 }

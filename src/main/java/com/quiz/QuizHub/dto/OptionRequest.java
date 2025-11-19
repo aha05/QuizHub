@@ -8,5 +8,4 @@ import lombok.Data;
 public class OptionRequest {
     private String text;
     private boolean isCorrect;
-    private Question question;
 }

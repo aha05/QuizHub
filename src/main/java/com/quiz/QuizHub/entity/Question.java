@@ -21,6 +21,6 @@ public class Question {
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "question")
     private List<Option> options;
 }

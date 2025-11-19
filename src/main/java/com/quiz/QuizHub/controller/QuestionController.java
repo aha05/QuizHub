@@ -41,19 +41,17 @@ public class QuestionController {
 
     @PostMapping("/{id}/options")
     public ResponseEntity<OptionResponse> addOptions(@PathVariable Long id, @RequestBody OptionRequest request) {
-
         return ResponseEntity.status(HttpStatus.OK).body(questionService.addOption(id, request));
     }
 
     @PutMapping("/{id}/option/{optionId}")
-    public ResponseEntity<Void> updateOption(@PathVariable Long id, @RequestBody OptionRequest request) {
-        questionService.updateOption(id, optionId, request);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public ResponseEntity<OptionResponse> updateOption(@PathVariable(name = "id") Long id, @PathVariable(name = "optionId") Long optionId, @RequestBody OptionRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(questionService.updateOption(id, optionId, request));
     }
 
     @DeleteMapping("/{id}/option/{optionId}")
     public ResponseEntity<Void> deleteOption(@PathVariable(name = "id") Long id, @PathVariable(name = "optionId") Long optionId) {
-        questionService.removeOption(id);
+        questionService.removeOption(id, optionId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
