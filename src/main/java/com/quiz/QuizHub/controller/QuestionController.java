@@ -13,44 +13,55 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("question")
 @AllArgsConstructor
 public class QuestionController {
     private final QuestionService questionService;
 
-    @GetMapping
-    public ResponseEntity<List<Question>> getQuestions() {
+    @GetMapping("question")
+    public ResponseEntity<List<QuestionResponse>> getQuestions() {
         return ResponseEntity.status(HttpStatus.OK).body(questionService.getQuestions());
     }
 
-    @PostMapping
-    public ResponseEntity<Question> addQuestion(@RequestBody QuestionRequest request) {
-        return ResponseEntity.status(HttpStatus.OK).body(questionService.addQuestions(request));
+    @PostMapping("quiz/{quizId}/question")
+    public ResponseEntity<QuestionResponse> addQuestion(@PathVariable(name = "quizId") Long quizId, @RequestBody QuestionRequest request) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(questionService.addQuestions(quizId, request));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("question/{id}")
     public ResponseEntity<Question> updateQuestion(@RequestBody QuestionRequest request, @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(questionService.updateQuestions(request, id));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("question/{id}")
     public ResponseEntity<Void> deleteQuestion(@PathVariable Long id) {
         questionService.deleteQuestion(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PostMapping("/{id}/options")
+    @GetMapping("question/{id}/options")
+    public ResponseEntity<List<OptionResponse>> getOptions(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(questionService.getOption(id));
+    }
+
+    @PostMapping("question/{id}/options")
     public ResponseEntity<OptionResponse> addOptions(@PathVariable Long id, @RequestBody OptionRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(questionService.addOption(id, request));
     }
 
-    @PutMapping("/{id}/option/{optionId}")
+    @PutMapping("question/{id}/option/{optionId}")
     public ResponseEntity<OptionResponse> updateOption(@PathVariable(name = "id") Long id, @PathVariable(name = "optionId") Long optionId, @RequestBody OptionRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(questionService.updateOption(id, optionId, request));
     }
 
-    @DeleteMapping("/{id}/option/{optionId}")
+    @DeleteMapping("question/{id}/option/{optionId}")
     public ResponseEntity<Void> deleteOption(@PathVariable(name = "id") Long id, @PathVariable(name = "optionId") Long optionId) {
+        questionService.removeOption(id, optionId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @DeleteMapping("score/{questionId}/option/{optionId}")
+    public ResponseEntity<Void> calculateScore(@PathVariable(name = "id") Long id, @PathVariable(name = "optionId") Long optionId) {
         questionService.removeOption(id, optionId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

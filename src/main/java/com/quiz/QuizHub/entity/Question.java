@@ -1,9 +1,11 @@
 package com.quiz.QuizHub.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,9 +20,10 @@ public class Question {
     private String content;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
     @OneToMany(mappedBy = "question")
-    private List<Option> options;
+    private List<Option> options = new ArrayList<>();
 }
