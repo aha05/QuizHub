@@ -7,6 +7,7 @@ import com.quiz.QuizHub.entity.Quiz;
 import com.quiz.QuizHub.entity.User;
 import com.quiz.QuizHub.service.QuizService;
 import com.quiz.QuizHub.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +27,12 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> addUser(@RequestBody UserRequest request) {
+    public ResponseEntity<User> addUser(@Valid @RequestBody UserRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.addUser(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(@RequestBody UserRequest request, @PathVariable Long id) {
+    public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserRequest request, @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(request, id));
     }
 

@@ -5,6 +5,7 @@ import com.quiz.QuizHub.entity.Question;
 import com.quiz.QuizHub.entity.User;
 import com.quiz.QuizHub.service.QuestionService;
 import com.quiz.QuizHub.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +24,13 @@ public class QuestionController {
     }
 
     @PostMapping("quiz/{quizId}/question")
-    public ResponseEntity<QuestionResponse> addQuestion(@PathVariable(name = "quizId") Long quizId, @RequestBody QuestionRequest request) {
+    public ResponseEntity<QuestionResponse> addQuestion(@PathVariable(name = "quizId") Long quizId, @Valid @RequestBody QuestionRequest request) {
 
         return ResponseEntity.status(HttpStatus.OK).body(questionService.addQuestions(quizId, request));
     }
 
     @PutMapping("question/{id}")
-    public ResponseEntity<Question> updateQuestion(@RequestBody QuestionRequest request, @PathVariable Long id) {
+    public ResponseEntity<Question> updateQuestion(@Valid @RequestBody QuestionRequest request, @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(questionService.updateQuestions(request, id));
     }
 
@@ -45,12 +46,12 @@ public class QuestionController {
     }
 
     @PostMapping("question/{id}/options")
-    public ResponseEntity<OptionResponse> addOptions(@PathVariable Long id, @RequestBody OptionRequest request) {
+    public ResponseEntity<OptionResponse> addOptions(@PathVariable Long id, @Valid @RequestBody OptionRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(questionService.addOption(id, request));
     }
 
     @PutMapping("question/{id}/option/{optionId}")
-    public ResponseEntity<OptionResponse> updateOption(@PathVariable(name = "id") Long id, @PathVariable(name = "optionId") Long optionId, @RequestBody OptionRequest request) {
+    public ResponseEntity<OptionResponse> updateOption(@PathVariable(name = "id") Long id, @PathVariable(name = "optionId") Long optionId, @Valid @RequestBody OptionRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(questionService.updateOption(id, optionId, request));
     }
 

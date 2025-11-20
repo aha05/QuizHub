@@ -3,6 +3,7 @@ package com.quiz.QuizHub.controller;
 import com.quiz.QuizHub.dto.QuizRequest;
 import com.quiz.QuizHub.entity.Quiz;
 import com.quiz.QuizHub.service.QuizService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,12 @@ public class QuizController {
     }
 
     @PostMapping
-    public ResponseEntity<Quiz> addQuiz(@RequestBody QuizRequest request) {
+    public ResponseEntity<Quiz> addQuiz(@Valid @RequestBody QuizRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(quizService.addQuiz(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Quiz> updateQuiz(@RequestBody QuizRequest request, @PathVariable Long id) {
+    public ResponseEntity<Quiz> updateQuiz(@Valid @RequestBody QuizRequest request, @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(quizService.updateQuiz(request, id));
     }
 
