@@ -14,7 +14,4 @@ public class UserAnswerRequest {
 
     @NotNull(message = "Option id can not be null")
     public Long optionId;
-
-    @NotNull(message = "isCorrect cannot be null")
-    private boolean isCorrect;
 }

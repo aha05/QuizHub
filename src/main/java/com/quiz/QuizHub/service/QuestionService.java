@@ -1,17 +1,11 @@
 package com.quiz.QuizHub.service;
 
-import com.quiz.QuizHub.Repository.OptionRepository;
-import com.quiz.QuizHub.Repository.QuestionRepository;
-import com.quiz.QuizHub.Repository.QuizRepository;
-import com.quiz.QuizHub.dto.OptionRequest;
-import com.quiz.QuizHub.dto.OptionResponse;
-import com.quiz.QuizHub.dto.QuestionRequest;
-import com.quiz.QuizHub.dto.QuestionResponse;
-import com.quiz.QuizHub.entity.Option;
-import com.quiz.QuizHub.entity.Question;
-import com.quiz.QuizHub.entity.Quiz;
+import com.quiz.QuizHub.Repository.*;
+import com.quiz.QuizHub.dto.*;
+import com.quiz.QuizHub.entity.*;
 import com.quiz.QuizHub.mapper.OptionMapper;
 import com.quiz.QuizHub.mapper.QuestionMapper;
+import com.quiz.QuizHub.mapper.UserAnswerMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +16,15 @@ import java.util.List;
 public class QuestionService {
     public final QuestionMapper questionMapper;
     public final OptionMapper optionMapper;
+    public final UserRepository userRepository;
     public final QuizRepository quizRepository;
     public final QuestionRepository questionRepository;
     public final OptionRepository optionRepository;
+    public final UserAnswerRepository userAnswerRepository;
+    public final UserAnswerMapper userAnswerMapper;
+    public final ScoreRepository scoreRepository;
+
+
 
     public List<QuestionResponse> getQuestions(){
         return questionRepository.findAll()
@@ -85,5 +85,47 @@ public class QuestionService {
         optionRepository.deleteById(optionId);
     }
 
+    public UserAnswerResponse userAnswer(Long quizId, UserAnswerRequest request) {
+        var count = userAnswerRepository.checkIfAnswerAlreadyExist(request.getUserId(), request.getQuestionId());
+        System.out.println("count:" + count);
+        if(count > 0) return null;
+
+        var user = userRepository.findById(request.userId).orElse(null);
+        var question = questionRepository.findById(request.questionId).orElse(null);
+        var option = optionRepository.findById(request.optionId).orElse(null);
+
+        UserAnswer answer = new UserAnswer();
+        answer.setUser(user);
+        answer.setQuestion(question);
+        answer.setOption(option);
+        userAnswerRepository.save(answer);
+
+        var result = userAnswerMapper.toDto(request);
+        if(option == null) return null;
+        result.setCorrect(option.isCorrect());
+
+        if(option.isCorrect()) {
+            calculateScore(quizId, user);
+        }
+
+        return result;
+    }
+
+    public void calculateScore(Long quizId, User user){
+        var quiz = quizRepository.findById(quizId).orElse(null);
+        Score scoreEntity = new Score();
+        scoreEntity.setQuiz(quiz);
+        scoreEntity.setUser(user);
+        Score score = scoreRepository.findScore(user.getId(), quizId);
+
+        if(score == null) {
+            scoreEntity.setScore(1);
+            scoreRepository.save(scoreEntity);
+            return;
+        }
+
+        score.setScore(score.getScore() + 1);
+        scoreRepository.save(score);
+    }
 
 }

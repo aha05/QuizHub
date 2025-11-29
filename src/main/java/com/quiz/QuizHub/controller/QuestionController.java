@@ -3,6 +3,7 @@ package com.quiz.QuizHub.controller;
 import com.quiz.QuizHub.dto.*;
 import com.quiz.QuizHub.entity.Question;
 import com.quiz.QuizHub.entity.User;
+import com.quiz.QuizHub.entity.UserAnswer;
 import com.quiz.QuizHub.service.QuestionService;
 import com.quiz.QuizHub.service.UserService;
 import jakarta.validation.Valid;
@@ -61,9 +62,8 @@ public class QuestionController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("score/{questionId}/option/{optionId}")
-    public ResponseEntity<Void> calculateScore(@PathVariable(name = "id") Long id, @PathVariable(name = "optionId") Long optionId) {
-        questionService.removeOption(id, optionId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    @PostMapping("quiz/{quizId}/answer")
+    public ResponseEntity<UserAnswerResponse> userAnswer(@PathVariable(name = "quizId") Long quizId, @RequestBody UserAnswerRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(questionService.userAnswer(quizId, request));
     }
 }

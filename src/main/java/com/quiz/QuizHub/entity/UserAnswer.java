@@ -18,8 +18,12 @@ public class UserAnswer {
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "quiz_id")
+    private Quiz quiz;
+
+    @ManyToOne
     @JoinColumn(name = "question_id")
-    private Quiz question;
+    private Question question;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "option_id")

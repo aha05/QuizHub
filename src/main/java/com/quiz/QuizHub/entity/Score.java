@@ -21,5 +21,5 @@ public class Score {
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
-    private String score;
+    private Integer score;
 }

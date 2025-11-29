@@ -1,5 +1,7 @@
 package com.quiz.QuizHub.controller;
 
+import com.quiz.QuizHub.dto.QuestionRequest;
+import com.quiz.QuizHub.dto.QuestionResponse;
 import com.quiz.QuizHub.dto.QuizRequest;
 import com.quiz.QuizHub.entity.Quiz;
 import com.quiz.QuizHub.service.QuizService;
@@ -38,4 +40,10 @@ public class QuizController {
         quizService.deleteQuiz(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @GetMapping("/{quizId}/question")
+    public ResponseEntity<List<QuestionResponse>> getQuestions(@PathVariable(name = "quizId") Long quizId) {
+        return ResponseEntity.status(HttpStatus.OK).body(quizService.getAllQuestions(quizId));
+    }
+
 }
