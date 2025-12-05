@@ -66,4 +66,14 @@ public class QuestionController {
     public ResponseEntity<UserAnswerResponse> userAnswer(@PathVariable(name = "quizId") Long quizId, @RequestBody UserAnswerRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(questionService.userAnswer(quizId, request));
     }
+
+    @GetMapping("score/{userId}")
+    public ResponseEntity<List<ScoreResponse>> userScore(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(questionService.getUserScore(userId));
+    }
+
+    @GetMapping("user/{userId}/answer")
+    public ResponseEntity<List<UserAnswerResponse>> userAnswer(@PathVariable(name = "userId") Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(questionService.getUserAnswer(userId));
+    }
 }

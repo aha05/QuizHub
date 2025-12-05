@@ -1,13 +1,11 @@
 package com.quiz.QuizHub.service;
 
 import com.quiz.QuizHub.Repository.QuizRepository;
-import com.quiz.QuizHub.dto.QuestionRequest;
 import com.quiz.QuizHub.dto.QuestionResponse;
 import com.quiz.QuizHub.dto.QuizRequest;
 import com.quiz.QuizHub.entity.Quiz;
 import com.quiz.QuizHub.mapper.QuestionMapper;
 import com.quiz.QuizHub.mapper.QuizMapper;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

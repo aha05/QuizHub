@@ -5,6 +5,7 @@ import com.quiz.QuizHub.dto.*;
 import com.quiz.QuizHub.entity.*;
 import com.quiz.QuizHub.mapper.OptionMapper;
 import com.quiz.QuizHub.mapper.QuestionMapper;
+import com.quiz.QuizHub.mapper.ScoreMapper;
 import com.quiz.QuizHub.mapper.UserAnswerMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class QuestionService {
     public final UserAnswerRepository userAnswerRepository;
     public final UserAnswerMapper userAnswerMapper;
     public final ScoreRepository scoreRepository;
-
+    public final ScoreMapper scoreMapper;
 
 
     public List<QuestionResponse> getQuestions(){
@@ -87,22 +88,29 @@ public class QuestionService {
 
     public UserAnswerResponse userAnswer(Long quizId, UserAnswerRequest request) {
         var count = userAnswerRepository.checkIfAnswerAlreadyExist(request.getUserId(), request.getQuestionId());
-        System.out.println("count:" + count);
         if(count > 0) return null;
 
-        var user = userRepository.findById(request.userId).orElse(null);
-        var question = questionRepository.findById(request.questionId).orElse(null);
-        var option = optionRepository.findById(request.optionId).orElse(null);
+        var user = userRepository.findById(request.getUserId()).orElse(null);
+        var question = questionRepository.findById(request.getQuestionId()).orElse(null);
+        var option = optionRepository.findById(request.getOptionId()).orElse(null);
+        var quiz = quizRepository.findById(quizId).orElse(null);
 
         UserAnswer answer = new UserAnswer();
         answer.setUser(user);
+        answer.setQuiz(quiz);
         answer.setQuestion(question);
         answer.setOption(option);
-        userAnswerRepository.save(answer);
+        if(option != null)
+            answer.setCorrect(option.isCorrect());
 
-        var result = userAnswerMapper.toDto(request);
+        var userAnswer = userAnswerRepository.save(answer);
+
+
+
+        var result = userAnswerMapper.toDto(userAnswer);
+
+
         if(option == null) return null;
-        result.setCorrect(option.isCorrect());
 
         if(option.isCorrect()) {
             calculateScore(quizId, user);
@@ -126,6 +134,20 @@ public class QuestionService {
 
         score.setScore(score.getScore() + 1);
         scoreRepository.save(score);
+    }
+
+    public List<ScoreResponse> getUserScore(Long userId){
+        return scoreRepository.findByUserId(userId)
+                .stream()
+                .map(scoreMapper::toDto)
+                .toList();
+    }
+
+    public List<UserAnswerResponse> getUserAnswer(Long userId){
+        return userAnswerRepository.findByUserId(userId)
+                .stream()
+                .map(userAnswerMapper::toDto)
+                .toList();
     }
 
 }

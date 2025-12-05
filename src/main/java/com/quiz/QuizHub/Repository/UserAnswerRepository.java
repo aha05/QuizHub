@@ -6,7 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface UserAnswerRepository extends JpaRepository<UserAnswer, Long> {
-    @Query("SELECT Count(u) FROM UserAnswer u WHERE u.user.id = :userId AND u.question.id = :questionId AND u.is_correct = true")
+    @Query("SELECT Count(u) FROM UserAnswer u WHERE u.user.id = :userId AND u.question.id = :questionId AND u.isCorrect = true")
     Integer checkIfAnswerAlreadyExist(@Param("userId") Long userId, @Param("questionId") Long questionId);
+
+    List<UserAnswer> findByUserId(Long userId);
 }

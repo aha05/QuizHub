@@ -29,5 +29,5 @@ public class UserAnswer {
     @JoinColumn(name = "option_id")
     private Option option;
 
-    private boolean is_correct;
+    private boolean isCorrect;
 }
