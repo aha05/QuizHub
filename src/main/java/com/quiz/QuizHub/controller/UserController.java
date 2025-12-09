@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> addUser(@Valid @RequestBody UserRequest request) {
+    public ResponseEntity<UserResponse> addUser(@Valid @RequestBody UserRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.addUser(request));
     }
 

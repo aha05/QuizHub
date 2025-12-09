@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @AllArgsConstructor
@@ -92,27 +93,31 @@ public class QuestionService {
 
         var user = userRepository.findById(request.getUserId()).orElse(null);
         var question = questionRepository.findById(request.getQuestionId()).orElse(null);
-        var option = optionRepository.findById(request.getOptionId()).orElse(null);
+        var currentOption = optionRepository.findById(request.getOptionId()).orElse(null);
+
+        var options = question.getOptions();
+        if(options == null) return null;
         var quiz = quizRepository.findById(quizId).orElse(null);
 
         UserAnswer answer = new UserAnswer();
         answer.setUser(user);
         answer.setQuiz(quiz);
         answer.setQuestion(question);
-        answer.setOption(option);
-        if(option != null)
-            answer.setCorrect(option.isCorrect());
+        answer.setOption(currentOption);
+
+        AtomicBoolean isCorrect = new AtomicBoolean(false);
+        options.forEach(option -> {
+            if(option.getId().equals(request.getOptionId()) && option.isCorrect()){
+                answer.setOption(option);
+                isCorrect.compareAndSet(false, true);
+                answer.setCorrect(isCorrect.get());
+            }
+        });
 
         var userAnswer = userAnswerRepository.save(answer);
-
-
-
         var result = userAnswerMapper.toDto(userAnswer);
 
-
-        if(option == null) return null;
-
-        if(option.isCorrect()) {
+        if(isCorrect.get()) {
             calculateScore(quizId, user);
         }
 

@@ -27,7 +27,8 @@ public class QuizService {
         if (quiz == null) {
             return null;
         }
-//        quiz.getQuestions();
+
+//     quiz.getQuestions();
 
         return quiz;
     }
