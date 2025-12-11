@@ -4,6 +4,7 @@ import com.quiz.QuizHub.Repository.UserRepository;
 
 import com.quiz.QuizHub.dto.UserRequest;
 import com.quiz.QuizHub.dto.UserResponse;
+import com.quiz.QuizHub.entity.Role;
 import com.quiz.QuizHub.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,7 @@ public class UserService implements UserDetailsService {
         }
 
         var user = userMapper.toEntity(request);
+        user.setRole(Role.ADMIN);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userMapper.toDto(userRepository.save(user));
     }

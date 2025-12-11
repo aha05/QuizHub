@@ -1,11 +1,7 @@
 package com.quiz.QuizHub.controller;
 
-import com.quiz.QuizHub.dto.QuizRequest;
 import com.quiz.QuizHub.dto.UserRequest;
 import com.quiz.QuizHub.dto.UserResponse;
-import com.quiz.QuizHub.entity.Quiz;
-import com.quiz.QuizHub.entity.User;
-import com.quiz.QuizHub.service.QuizService;
 import com.quiz.QuizHub.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
