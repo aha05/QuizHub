@@ -8,6 +8,9 @@ import lombok.Data;
 
 @Data
 public class UserRequest {
+    @NotNull(message = "Name cannot be null")
+    private String name;
+
     @NotNull(message = "Username cannot be null")
     private String username;
 

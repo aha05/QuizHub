@@ -1,12 +1,16 @@
 package com.quiz.QuizHub.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-@Getter
 @Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -18,7 +22,9 @@ public class User {
     private String email;
     private String password;
 
+    @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
+
 
 }

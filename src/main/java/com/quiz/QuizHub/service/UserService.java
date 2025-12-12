@@ -36,7 +36,7 @@ public class UserService implements UserDetailsService {
         }
 
         var user = userMapper.toEntity(request);
-        user.setRole(Role.ADMIN);
+        user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userMapper.toDto(userRepository.save(user));
     }
