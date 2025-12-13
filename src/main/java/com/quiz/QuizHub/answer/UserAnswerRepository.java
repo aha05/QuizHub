@@ -1,0 +1,11 @@
+package com.quiz.QuizHub.answer;
+
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface UserAnswerRepository extends JpaRepository<UserAnswer, Long> {
+    boolean existsByUser_IdAndQuestion_Id(Long userId, Long questionId);
+    List<UserAnswer> findByUserId(Long userId);
+}
