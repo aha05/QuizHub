@@ -1,5 +1,7 @@
 package com.quiz.QuizHub.option;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@Tag(name = "Option")
 public class OptionController {
     private OptionService optionService;
 
@@ -18,6 +21,7 @@ public class OptionController {
         return ResponseEntity.status(HttpStatus.OK).body(optionService.getOptions(id));
     }
 
+    @Operation(summary = "Add a option to the question")
     @PostMapping("question/{id}/options")
     public ResponseEntity<OptionResponse> addOptions(@PathVariable Long id, @Valid @RequestBody OptionRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(optionService.addOption(id, request));

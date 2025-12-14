@@ -1,6 +1,7 @@
 package com.quiz.QuizHub.answer;
 
 import com.quiz.QuizHub.score.ScoreResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@Tag(name = "Answer")
 public class UserAnswerController {
     private UserAnswerService userAnswerService;
 

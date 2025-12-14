@@ -1,5 +1,6 @@
 package com.quiz.QuizHub.user;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("users")
+@Tag(name = "User")
 public class UserController {
     private final UserService userService;
 
@@ -18,6 +20,7 @@ public class UserController {
     public ResponseEntity<List<UserResponse>> getUser() {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUsers());
     }
+
 
     @PostMapping
     public ResponseEntity<UserResponse> addUser(@Valid @RequestBody UserRequest request) {

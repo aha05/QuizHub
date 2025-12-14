@@ -1,6 +1,7 @@
 package com.quiz.QuizHub.quiz;
 
 import com.quiz.QuizHub.question.QuestionResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("quiz")
 @AllArgsConstructor
+@Tag(name = "Quiz")
 public class QuizController {
     private final QuizService quizService;
 
