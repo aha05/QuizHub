@@ -1,4 +1,4 @@
-package com.quiz.QuizHub.answer;
+package com.quiz.QuizHub.core;
 
 import com.quiz.QuizHub.core.SecurityRules;
 import org.springframework.http.HttpMethod;
@@ -7,10 +7,13 @@ import org.springframework.security.config.annotation.web.configurers.AuthorizeH
 import org.springframework.stereotype.Component;
 
 @Component
-public class AnswerSecurityRules implements SecurityRules {
+public class SwaggerSecurityRules implements SecurityRules {
     @Override
     public void configure(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
-
+        registry.requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/swagger-ui.html").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll();
     }
 }
+
 

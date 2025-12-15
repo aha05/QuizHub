@@ -1,5 +1,6 @@
 package com.quiz.QuizHub.auth;
 
+import com.quiz.QuizHub.core.SecurityRules;
 import com.quiz.QuizHub.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,26 +19,21 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.List;
+
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-//    private final UserService userService;
+    private final List<SecurityRules> featureSecurityRules;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public AuthenticationProvider authenticationProvider() {
-//        var provider = new DaoAuthenticationProvider();
-//        provider.setPasswordEncoder(passwordEncoder());
-//        provider.setUserDetailsService(userService);
-//        return provider;
-//    }
 
     @Bean
     public AuthenticationManager authenticationManger(AuthenticationConfiguration config) throws Exception {
@@ -53,14 +49,10 @@ public class SecurityConfig {
                 .sessionManagement(c->
                         c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(c-> c
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
-                        .requestMatchers(HttpMethod.POST,"auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST,"auth/validate").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/refresh").permitAll()
-                        .anyRequest().authenticated())
+                .authorizeHttpRequests(c-> {
+                    featureSecurityRules.forEach(r -> r.configure(c));
+                    c.anyRequest().authenticated();
+                })
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(c-> {
                     c.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
@@ -68,7 +60,6 @@ public class SecurityConfig {
                         response.setStatus(HttpStatus.FORBIDDEN.value());
                     });
                 });
-        ;
         return http.build();
     }
 }
