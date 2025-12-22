@@ -1,5 +1,6 @@
 package com.quiz.QuizHub.auth;
 
+import com.quiz.QuizHub.core.SecurityRules;
 import com.quiz.QuizHub.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -7,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,6 +19,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 
 @Configuration
@@ -24,20 +31,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-//    private final UserService userService;
+    private final List<SecurityRules> featureSecurityRules;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
-//    @Bean
-//    public AuthenticationProvider authenticationProvider() {
-//        var provider = new DaoAuthenticationProvider();
-//        provider.setPasswordEncoder(passwordEncoder());
-//        provider.setUserDetailsService(userService);
-//        return provider;
-//    }
 
     @Bean
     public AuthenticationManager authenticationManger(AuthenticationConfiguration config) throws Exception {
@@ -47,20 +46,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.headers(headers -> headers
-                        .frameOptions(frame -> frame.disable())     // Allow frames for H2 console
-                )
-                .sessionManagement(c->
+        http.sessionManagement(c->
                         c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(c-> c
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
-                        .requestMatchers(HttpMethod.POST,"auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST,"auth/validate").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/refresh").permitAll()
-                        .anyRequest().authenticated())
+                .cors(Customizer.withDefaults())
+                .authorizeHttpRequests(c-> {
+                        featureSecurityRules.forEach(r->r.configure(c));
+                        c.anyRequest().authenticated();
+                })
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(c-> {
                     c.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
@@ -68,8 +61,30 @@ public class SecurityConfig {
                         response.setStatus(HttpStatus.FORBIDDEN.value());
                     });
                 });
-        ;
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+
+        // Allowed frontend origin
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
+
+        // Allowed HTTP methods
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        // Allowed headers
+        config.setAllowedHeaders(List.of("*"));
+
+        // Enable credentials for cookies
+        config.setAllowCredentials(true);
+
+        // Register for all endpoints
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return source;
     }
 }
 

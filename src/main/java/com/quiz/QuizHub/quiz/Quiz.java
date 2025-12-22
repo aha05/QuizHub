@@ -16,9 +16,13 @@ import java.util.List;
 public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="name")
     private Long id;
 
+    @Column(name="title")
     private String title;
+
+    @Column(name="description")
     private String description;
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)

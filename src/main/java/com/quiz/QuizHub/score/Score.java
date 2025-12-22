@@ -13,6 +13,7 @@ import lombok.Setter;
 public class Score {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
     @ManyToOne
@@ -23,5 +24,6 @@ public class Score {
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
+    @Column(name="score")
     private Integer score;
 }

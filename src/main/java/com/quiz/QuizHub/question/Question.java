@@ -17,8 +17,10 @@ import java.util.List;
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
+    @Column(name="content")
     private String content;
 
     @ManyToOne

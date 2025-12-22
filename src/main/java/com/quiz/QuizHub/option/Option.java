@@ -13,9 +13,13 @@ import lombok.Setter;
 public class Option {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
+    @Column(name="text")
     private String text;
+
+    @Column(name="is_correct")
     private boolean isCorrect;
 
     @ManyToOne

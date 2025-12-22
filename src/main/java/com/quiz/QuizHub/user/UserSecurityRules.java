@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 public class UserSecurityRules implements SecurityRules {
     @Override
     public void configure(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
-        registry.requestMatchers(HttpMethod.GET, "/users").hasRole(Role.ADMIN.name())
-                .requestMatchers(HttpMethod.POST, "/users").hasRole(Role.ADMIN.name())
+        registry.requestMatchers(HttpMethod.POST, "/users").permitAll()
+                .requestMatchers(HttpMethod.GET, "/users").hasRole(Role.ADMIN.name())
                 .requestMatchers(HttpMethod.PUT, "/users/{id}").hasRole(Role.ADMIN.name())
                 .requestMatchers(HttpMethod.DELETE, "/users/{id}").hasRole(Role.ADMIN.name());
     }
