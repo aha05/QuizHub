@@ -83,9 +83,10 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(userMapper.toDto(user));
     }
 
-    @PostMapping("/auth/logout")
+    @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletResponse response) {
         // Clear HttpOnly cookie
+        System.out.println("Logout");
         var cookie = ResponseCookie.from("refreshToken", "")
                 .httpOnly(true)
                 .secure(true)
@@ -95,7 +96,7 @@ public class AuthController {
                 .build();
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @ExceptionHandler(BadCredentialsException.class)
