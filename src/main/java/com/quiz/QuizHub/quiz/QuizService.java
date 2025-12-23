@@ -14,20 +14,24 @@ public class QuizService {
     private final QuizRepository quizRepository;
     private final QuizMapper quizMapper;
     private final QuestionMapper questionMapper;
+    private final CategoryRepository categoryRepository;
 
-    public List<Quiz> getQuizzes(){
-        return quizRepository.findAll();
+    public List<QuizDto> getQuizzes(){
+        return quizRepository.findAll()
+                .stream()
+                .map(quizMapper::toDto)
+                .toList();
     }
 
-    public Quiz addQuiz(QuizRequest request){
+    public QuizDto addQuiz(QuizRequest request){
         var quiz = quizMapper.toEntity(request);
-        return quizRepository.save(quiz);
+        return quizMapper.toDto(quizRepository.save(quiz));
     }
 
-    public Quiz updateQuiz(QuizRequest request, Long quizId){
+    public QuizDto updateQuiz(QuizRequest request, Long quizId){
         var quiz = findQuizById(quizId);
         quizMapper.update(request, quiz);
-        return quizRepository.save(quiz);
+        return quizMapper.toDto(quizRepository.save(quiz));
     }
 
     public void deleteQuiz(Long id) {
@@ -45,4 +49,10 @@ public class QuizService {
         return quizRepository.findById(quizId)
                 .orElseThrow(() -> new QuizNotFoundException("Quiz not found with id: " + quizId));
     }
+
+    public Category addCategory(CategoryRequest request){
+        var category = quizMapper.toEntity(request);
+        return categoryRepository.save(category);
+    }
+
 }

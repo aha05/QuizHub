@@ -18,17 +18,17 @@ public class QuizController {
     private final QuizService quizService;
 
     @GetMapping
-    public ResponseEntity<List<Quiz>> getQuiz() {
+    public ResponseEntity<List<QuizDto>> getQuiz() {
         return ResponseEntity.status(HttpStatus.OK).body(quizService.getQuizzes());
     }
 
     @PostMapping
-    public ResponseEntity<Quiz> addQuiz(@Valid @RequestBody QuizRequest request) {
+    public ResponseEntity<QuizDto> addQuiz(@Valid @RequestBody QuizRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(quizService.addQuiz(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Quiz> updateQuiz(@Valid @RequestBody QuizRequest request, @PathVariable Long id) {
+    public ResponseEntity<QuizDto> updateQuiz(@Valid @RequestBody QuizRequest request, @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(quizService.updateQuiz(request, id));
     }
 
@@ -41,5 +41,10 @@ public class QuizController {
     @GetMapping("/{quizId}/question")
     public ResponseEntity<List<QuestionResponse>> getQuestions(@PathVariable(name = "quizId") Long quizId) {
         return ResponseEntity.status(HttpStatus.OK).body(quizService.getAllQuestions(quizId));
+    }
+
+    @PostMapping("/category")
+    public ResponseEntity<Category> addCategory(@Valid @RequestBody CategoryRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(quizService.addCategory(request));
     }
 }

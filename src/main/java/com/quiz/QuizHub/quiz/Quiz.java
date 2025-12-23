@@ -16,7 +16,7 @@ import java.util.List;
 public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="name")
+    @Column(name="id")
     private Long id;
 
     @Column(name="title")
@@ -25,9 +25,26 @@ public class Quiz {
     @Column(name="description")
     private String description;
 
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @Column(name="difficulty")
+    @Enumerated(EnumType.STRING)
+    private Difficulty difficulty;
+
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<Question> questions = new ArrayList<>();
 
+    @Column(name="status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @Transient
+    public int getNumberOfQuestions() {
+        return questions != null ? questions.size() : 0;
+    }
 }
 
