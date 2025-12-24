@@ -42,6 +42,9 @@ public class Quiz {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Column(name="time_limit")
+    private Integer timeLimit;
+
     @Transient
     public int getNumberOfQuestions() {
         return questions != null ? questions.size() : 0;

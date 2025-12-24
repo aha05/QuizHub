@@ -47,4 +47,9 @@ public class QuizController {
     public ResponseEntity<Category> addCategory(@Valid @RequestBody CategoryRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(quizService.addCategory(request));
     }
+
+    @GetMapping("/category")
+    public ResponseEntity<List<Category>> getCategories() {
+        return ResponseEntity.status(HttpStatus.OK).body(quizService.addCategories());
+    }
 }

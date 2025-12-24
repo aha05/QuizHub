@@ -11,4 +11,5 @@ public class QuizDto {
     private Difficulty difficulty;
     private Status status;
     private Integer questions;
+    private Integer timeLimit;
 }

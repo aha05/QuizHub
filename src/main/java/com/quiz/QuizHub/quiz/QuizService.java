@@ -25,6 +25,8 @@ public class QuizService {
 
     public QuizDto addQuiz(QuizRequest request){
         var quiz = quizMapper.toEntity(request);
+        var category = categoryRepository.findById(request.getCategoryId()).orElse(null);
+        quiz.setCategory(category);
         return quizMapper.toDto(quizRepository.save(quiz));
     }
 
@@ -55,4 +57,7 @@ public class QuizService {
         return categoryRepository.save(category);
     }
 
+    public List<Category> addCategories() {
+        return categoryRepository.findAll();
+    }
 }
