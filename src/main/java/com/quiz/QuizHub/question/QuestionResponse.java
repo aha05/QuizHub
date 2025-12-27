@@ -9,5 +9,6 @@ import java.util.List;
 public class QuestionResponse {
     private Long id;
     private String content;
+    private Type type;
     private List<OptionResponse> options;
 }

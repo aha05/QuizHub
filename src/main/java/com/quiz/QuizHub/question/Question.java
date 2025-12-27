@@ -23,6 +23,10 @@ public class Question {
     @Column(name="content")
     private String content;
 
+    @Column(name="type")
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "quiz_id")
