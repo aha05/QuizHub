@@ -23,11 +23,15 @@ public class Question {
     @Column(name="content")
     private String content;
 
+    @Column(name="type")
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<Option> options = new ArrayList<>();
 }

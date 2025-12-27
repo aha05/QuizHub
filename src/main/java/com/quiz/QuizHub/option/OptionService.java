@@ -34,7 +34,7 @@ public class OptionService {
     public OptionResponse updateOption(Long questionId, Long optionId, OptionRequest request) {
         var option = optionRepository.findById(optionId).orElseThrow(OptionNotFoundException::new);
         optionMapper.update(request, option);
-        return optionMapper.toDto(option);
+        return optionMapper.toDto(optionRepository.save(option));
     }
 
     public void removeOption(Long questionId, Long optionId) {

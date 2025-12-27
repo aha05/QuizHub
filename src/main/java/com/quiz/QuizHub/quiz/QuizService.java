@@ -33,6 +33,8 @@ public class QuizService {
     public QuizDto updateQuiz(QuizRequest request, Long quizId){
         var quiz = findQuizById(quizId);
         quizMapper.update(request, quiz);
+        var category = categoryRepository.findById(request.getCategoryId()).orElse(null);
+        quiz.setCategory(category);
         return quizMapper.toDto(quizRepository.save(quiz));
     }
 
@@ -41,10 +43,13 @@ public class QuizService {
     }
 
     public List<QuestionResponse> getAllQuestions(Long quizId) {
-       var quiz = findQuizById(quizId);
-       var questions = quiz.getQuestions();
-       if (questions == null) throw new QuestionNotFoundException("No question found.");
-       return questionMapper.toDto(quiz.getQuestions());
+       var questions = quizRepository
+                .findAllWithOptionsByQuizId(quizId);
+
+       if (questions.isEmpty()) {
+           throw new QuestionNotFoundException("No question found.");
+       }
+       return questionMapper.toDto(questions);
     }
 
     public Quiz findQuizById(Long quizId){
