@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class ScoreResponse {
     private Long id;
-    private User user;
-    private Quiz quiz;
+    private Long userId;
+    private Long quizId;
     private Integer score;
 }

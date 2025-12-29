@@ -29,9 +29,13 @@ public class Question {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "quiz_id")
+    @JoinColumn(name = "quiz_id", nullable = false)
     private Quiz quiz;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    @OneToMany(
+            mappedBy = "question",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<Option> options = new ArrayList<>();
 }

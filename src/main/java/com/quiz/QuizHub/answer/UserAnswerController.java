@@ -14,6 +14,7 @@ import java.util.List;
 @Tag(name = "Answer")
 public class UserAnswerController {
     private UserAnswerService userAnswerService;
+    private UserStatsService userStatsService;
 
     @PostMapping("quiz/{quizId}/answer")
     public ResponseEntity<UserAnswerResponse> userAnswer(@PathVariable(name = "quizId") Long quizId, @RequestBody UserAnswerRequest request) {
@@ -25,8 +26,13 @@ public class UserAnswerController {
         return ResponseEntity.status(HttpStatus.OK).body(userAnswerService.getUserScore(userId));
     }
 
-    @GetMapping("user/{userId}/answer")
-    public ResponseEntity<List<UserAnswerResponse>> userAnswer(@PathVariable(name = "userId") Long userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(userAnswerService.getUserAnswer(userId));
+    @GetMapping("user/{userId}/attempt")
+    public ResponseEntity<List<UserAnswerResponse>> userAttempt(@PathVariable(name = "userId") Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(userAnswerService.getAllUserAttempt(userId));
+    }
+
+    @GetMapping("user/{id}/stats")
+    public UserStatsDto getUserStats(@PathVariable Long id) {
+        return userStatsService.getUserStats(id);
     }
 }

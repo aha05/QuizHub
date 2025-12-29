@@ -34,7 +34,11 @@ public class Quiz {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
-    @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
+    @OneToMany(
+            mappedBy = "quiz",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     @JsonIgnore
     private List<Question> questions = new ArrayList<>();
 

@@ -30,7 +30,6 @@ public class UserAnswerService {
     private final ScoreMapper scoreMapper;
 
     public UserAnswerResponse userAnswer(Long quizId, UserAnswerRequest request) {
-        preventDuplicateAnswer(request); // return error if already answered.
 
         var user = userService.findUserById(request.getUserId());
         var question = questionService.findQuestionById(request.getQuestionId());
@@ -39,6 +38,7 @@ public class UserAnswerService {
 
         questionService.validateQuestionBelongsToQuiz(quizId, request.getQuestionId()); // throw error if question not exists in quiz
         optionService.validateBelongsToQuestion(request.getOptionId(), request.getQuestionId()); // throw error if option not exists in question
+        preventDuplicateAnswer(request); // return error if already answered.
 
         UserAnswer answer = UserAnswer.create(user, quiz, question, currentOption);
 
@@ -87,7 +87,7 @@ public class UserAnswerService {
                 .toList();
     }
 
-    public List<UserAnswerResponse> getUserAnswer(Long userId){
+    public List<UserAnswerResponse> getAllUserAttempt(Long userId){
         return userAnswerRepository.findByUserId(userId)
                 .stream()
                 .map(userAnswerMapper::toDto)

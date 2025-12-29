@@ -22,14 +22,15 @@ public class User {
     @Column(name="name")
     private String name;
 
-    @Column(name="username")
-    private String username;
-
-    @Column(name="eamil")
+    @Column(name="email")
     private String email;
 
     @Column(name="password")
     private String password;
+
+    @Column(name="status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
