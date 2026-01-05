@@ -42,6 +42,13 @@ public class UserService implements UserDetailsService {
     public UserResponse updateUser(UserRequest request, Long userId){
         var user = findUserById(userId);
         userMapper.update(request, user);
+        user.setStatus(Status.ACTIVE);
+        return userMapper.toDto(userRepository.save(user));
+    }
+
+    public UserResponse updateUserStatus(StatusUpdateRequest status, Long userId){
+        var user = findUserById(userId);
+        user.setStatus(status.getStatus());
         return userMapper.toDto(userRepository.save(user));
     }
 
