@@ -38,8 +38,8 @@ public class QuizService {
         return quizMapper.toDto(quizRepository.save(quiz));
     }
 
-    public void deleteQuiz(Long id) {
-       quizRepository.deleteById(id);
+    public void deleteQuiz(Long quizId) {
+       quizRepository.deleteById(quizId);
     }
 
     public List<QuestionResponse> getAllQuestions(Long quizId) {
@@ -64,5 +64,9 @@ public class QuizService {
 
     public List<Category> addCategories() {
         return categoryRepository.findAll();
+    }
+
+    public QuizDto getQuizById(Long quizId) {
+        return quizMapper.toDto(findQuizById(quizId));
     }
 }

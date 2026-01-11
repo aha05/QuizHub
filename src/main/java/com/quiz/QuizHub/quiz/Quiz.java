@@ -49,6 +49,9 @@ public class Quiz {
     @Column(name="time_limit")
     private Integer timeLimit;
 
+    @Column(name="pass_percentage")
+    private Integer passPercentage;
+
     @Transient
     public int getNumberOfQuestions() {
         return questions != null ? questions.size() : 0;

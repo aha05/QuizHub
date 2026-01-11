@@ -22,23 +22,28 @@ public class QuizController {
         return ResponseEntity.status(HttpStatus.OK).body(quizService.getQuizzes());
     }
 
+    @GetMapping("/{quizId}")
+    public ResponseEntity<QuizDto> getQuizById(@PathVariable Long quizId) {
+        return ResponseEntity.status(HttpStatus.OK).body(quizService.getQuizById(quizId));
+    }
+
     @PostMapping
     public ResponseEntity<QuizDto> addQuiz(@Valid @RequestBody QuizRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(quizService.addQuiz(request));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<QuizDto> updateQuiz(@Valid @RequestBody QuizRequest request, @PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(quizService.updateQuiz(request, id));
+    @PutMapping("/{quizId}")
+    public ResponseEntity<QuizDto> updateQuiz(@Valid @RequestBody QuizRequest request, @PathVariable Long quizId) {
+        return ResponseEntity.status(HttpStatus.OK).body(quizService.updateQuiz(request, quizId));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Quiz> deleteQuiz(@PathVariable Long id) {
-        quizService.deleteQuiz(id);
+    @DeleteMapping("/{quizId}")
+    public ResponseEntity<Quiz> deleteQuiz(@PathVariable Long quizId) {
+        quizService.deleteQuiz(quizId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("/{quizId}/question")
+    @GetMapping("/{quizId}/questions")
     public ResponseEntity<List<QuestionResponse>> getQuestions(@PathVariable(name = "quizId") Long quizId) {
         return ResponseEntity.status(HttpStatus.OK).body(quizService.getAllQuestions(quizId));
     }

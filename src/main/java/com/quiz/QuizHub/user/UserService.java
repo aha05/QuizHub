@@ -52,6 +52,12 @@ public class UserService implements UserDetailsService {
         return userMapper.toDto(userRepository.save(user));
     }
 
+    public UserResponse updateUserRole(RoleUpdateRequest role, Long userId){
+        var user = findUserById(userId);
+        user.setRole(role.getRole());
+        return userMapper.toDto(userRepository.save(user));
+    }
+
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }

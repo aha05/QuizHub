@@ -12,6 +12,6 @@ public interface QuizMapper {
      @Mapping(target = "questions", expression = "java(quiz.getNumberOfQuestions())")
      QuizDto toDto(Quiz quiz);
 
-    Category toEntity(CategoryRequest request);
+     Category toEntity(CategoryRequest request);
 }
 

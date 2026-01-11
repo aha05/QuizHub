@@ -34,8 +34,12 @@ public class UserController {
 
     @PutMapping("/{id}/status")
     public ResponseEntity<UserResponse> updateUserStatus(@Valid @RequestBody StatusUpdateRequest request, @PathVariable Long id) {
-        System.out.println("Status: " + request.getStatus());
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUserStatus(request, id));
+    }
+
+    @PutMapping("/{id}/role")
+    public ResponseEntity<UserResponse> updateUserRole(@Valid @RequestBody RoleUpdateRequest request, @PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUserRole(request, id));
     }
 
     @DeleteMapping("/{id}")
