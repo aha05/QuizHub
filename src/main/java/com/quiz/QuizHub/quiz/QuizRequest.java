@@ -23,8 +23,11 @@ public class QuizRequest {
     @NotNull(message = "Category cannot be blank")
     private Long categoryId;
 
-    @Min(5)
+    @Min(1)
     @Max(180)
     @NotNull(message = "TimeLimit cannot be null")
     private Integer timeLimit;
+
+    @NotNull(message = "PassPercentage cannot be null")
+    private Integer passPercentage;
 }

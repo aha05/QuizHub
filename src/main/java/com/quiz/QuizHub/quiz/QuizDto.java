@@ -12,4 +12,5 @@ public class QuizDto {
     private Status status;
     private Integer questions;
     private Integer timeLimit;
+    private Integer passPercentage;
 }
