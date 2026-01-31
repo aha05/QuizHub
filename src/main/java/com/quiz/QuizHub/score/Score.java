@@ -25,5 +25,5 @@ public class Score {
     private Quiz quiz;
 
     @Column(name="score")
-    private Integer score;
+    private int score;
 }

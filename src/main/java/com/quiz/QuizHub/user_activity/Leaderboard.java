@@ -1,11 +1,12 @@
-package com.quiz.QuizHub.core.user_activity;
+package com.quiz.QuizHub.user_activity;
 
 import lombok.Data;
 
 @Data
 public class Leaderboard {
-    private long userId;
+    private Long userId;
     private String username;
     private Integer score;
     private Integer quizzesAttempted;
+    private int rank;
 }

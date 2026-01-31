@@ -1,4 +1,4 @@
-package com.quiz.QuizHub.core.user_activity;
+package com.quiz.QuizHub.user_activity;
 
 import lombok.Data;
 
