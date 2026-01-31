@@ -1,5 +1,6 @@
 package com.quiz.QuizHub.user;
 
+import com.quiz.QuizHub.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
+    private final AuthService authService;
     public final UserMapper userMapper;
     public final UserRepository userRepository;
     public final PasswordEncoder passwordEncoder;
@@ -40,9 +42,18 @@ public class UserService implements UserDetailsService {
     }
 
     public UserResponse updateUser(UserRequest request, Long userId){
+        System.out.println(userId);
         var user = findUserById(userId);
         userMapper.update(request, user);
-        user.setStatus(Status.ACTIVE);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userMapper.toDto(userRepository.save(user));
+    }
+
+    public UserResponse updateProfile(UserRequest request){
+        Long userId = authService.getCurrentUser().getId();
+        var user = findUserById(userId);
+        userMapper.update(request, user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userMapper.toDto(userRepository.save(user));
     }
 

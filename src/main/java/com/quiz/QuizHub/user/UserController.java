@@ -32,6 +32,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(request, id));
     }
 
+    @PutMapping("/profile")
+    public ResponseEntity<UserResponse> updateProfile(@Valid @RequestBody UserRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateProfile(request));
+    }
+
     @PutMapping("/{id}/status")
     public ResponseEntity<UserResponse> updateUserStatus(@Valid @RequestBody StatusUpdateRequest request, @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUserStatus(request, id));
