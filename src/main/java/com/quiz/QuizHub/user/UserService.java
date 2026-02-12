@@ -35,14 +35,13 @@ public class UserService implements UserDetailsService {
            throw new UserAlreadyExistException();
         }
         var user = userMapper.toEntity(request);
-        user.setRole(Role.ADMIN);
+        user.setRole(Role.USER);
         user.setStatus(Status.ACTIVE);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userMapper.toDto(userRepository.save(user));
     }
 
     public UserResponse updateUser(UserRequest request, Long userId){
-        System.out.println(userId);
         var user = findUserById(userId);
         userMapper.update(request, user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));

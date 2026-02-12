@@ -1,13 +1,11 @@
-package com.quiz.QuizHub.answer;
+package com.quiz.QuizHub.user_activity;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class UserStatsDto {
     private Long userId;
     private String Name;
     private Long quizzesAttempted;
-    private Double highestScorePercentage;
+    private Long highestScorePercentage;
 }

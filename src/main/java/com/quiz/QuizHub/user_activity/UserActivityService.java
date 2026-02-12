@@ -9,6 +9,7 @@ import com.quiz.QuizHub.score.ScoreResponse;
 import com.quiz.QuizHub.submission.QuizResult;
 import com.quiz.QuizHub.submission.QuizResultRepository;
 import com.quiz.QuizHub.user.User;
+import com.quiz.QuizHub.user.UserNotFoundException;
 import com.quiz.QuizHub.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -107,8 +108,8 @@ public class UserActivityService {
 
     public UserActivityDto getUserActivity() {
         Long userId = authService.getCurrentUser().getId();
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         List<QuizResult> results = quizResultRepository.findByUserId(userId);
 

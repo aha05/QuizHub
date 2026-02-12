@@ -1,6 +1,5 @@
 package com.quiz.QuizHub.core;
 
-import com.quiz.QuizHub.answer.DuplicateAnswerException;
 import com.quiz.QuizHub.option.OptionNotFoundException;
 import com.quiz.QuizHub.option.OptionNotInQuestionException;
 import com.quiz.QuizHub.question.QuestionNotFoundException;
@@ -53,12 +52,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorDto> handleUserNotFound(Exception ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ErrorDto(ex.getMessage()));
-    }
-
-    @ExceptionHandler(DuplicateAnswerException.class)
-    public ResponseEntity<ErrorDto> handleDuplicateAnswer(Exception ex){
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(
                 new ErrorDto(ex.getMessage()));
     }
 
