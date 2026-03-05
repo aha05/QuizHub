@@ -57,4 +57,9 @@ public class QuizController {
     public ResponseEntity<List<Category>> getCategories() {
         return ResponseEntity.status(HttpStatus.OK).body(quizService.addCategories());
     }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<QuizDto>> getQuizByCategoryId(@PathVariable(name = "categoryId") Long categoryId) {
+        return ResponseEntity.status(HttpStatus.OK).body(quizService.getQuizByCategoryId(categoryId));
+    }
 }

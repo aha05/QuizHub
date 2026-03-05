@@ -14,4 +14,6 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
       WHERE q.quiz.id = :quizId
    """)
     List<Question> findAllWithOptionsByQuizId(Long quizId);
+
+    List<Quiz> findQuizByCategoryId(Long categoryId);
 }

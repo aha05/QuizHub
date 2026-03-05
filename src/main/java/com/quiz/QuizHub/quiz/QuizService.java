@@ -69,4 +69,8 @@ public class QuizService {
     public QuizDto getQuizById(Long quizId) {
         return quizMapper.toDto(findQuizById(quizId));
     }
+
+    public List<QuizDto> getQuizByCategoryId(Long categoryId) {
+        return quizMapper.toDto(quizRepository.findQuizByCategoryId(categoryId));
+    }
 }
