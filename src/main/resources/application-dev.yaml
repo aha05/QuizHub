@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SCHEMA_USERNAME}
+    password: ${SCHEMA_PASSWORD}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
