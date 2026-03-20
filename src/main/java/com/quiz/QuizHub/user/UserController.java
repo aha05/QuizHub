@@ -32,8 +32,16 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(request, id));
     }
 
-    @PutMapping("/profile")
-    public ResponseEntity<UserResponse> updateProfile(@Valid @RequestBody UserRequest request) {
+    @PostMapping("/{id}/change-password")
+    public ResponseEntity<Void> changePassword(
+            @PathVariable(name = "id") Long id,
+            @Valid @RequestBody ChangePasswordRequest request){
+        userService.changePassword(id, request);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PutMapping("/update/profile")
+    public ResponseEntity<UserResponse> updateProfile(@Valid @RequestBody UserUpdateRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateProfile(request));
     }
 
@@ -52,4 +60,6 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+
 }

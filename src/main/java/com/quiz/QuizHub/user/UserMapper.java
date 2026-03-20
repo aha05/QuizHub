@@ -10,6 +10,7 @@ import java.util.List;
 public interface UserMapper {
     User toEntity(UserRequest request);
     void update(UserRequest request, @MappingTarget User user);
+    void updateProfile(UserUpdateRequest request, @MappingTarget User user);
 
     UserResponse toDto(User user);
     List<UserResponse> toDto(List<User> user);

@@ -5,6 +5,7 @@ import com.quiz.QuizHub.option.OptionNotInQuestionException;
 import com.quiz.QuizHub.question.QuestionNotFoundException;
 import com.quiz.QuizHub.question.QuestionNotInQuizException;
 import com.quiz.QuizHub.quiz.QuizNotFoundException;
+import com.quiz.QuizHub.user.UnauthorizeAccessException;
 import com.quiz.QuizHub.user.UserAlreadyExistException;
 import com.quiz.QuizHub.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -53,6 +54,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorDto> handleUserNotFound(Exception ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ErrorDto(ex.getMessage()));
+    }
+
+    @ExceptionHandler(UnauthorizeAccessException.class)
+    public ResponseEntity<ErrorDto> handleUnauthorizeAccess(Exception ex){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
                 new ErrorDto(ex.getMessage()));
     }
 

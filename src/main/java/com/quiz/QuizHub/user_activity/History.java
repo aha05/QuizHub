@@ -3,6 +3,7 @@ package com.quiz.QuizHub.user_activity;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class History {
@@ -15,4 +16,6 @@ public class History {
     private String quizCategory;
     private boolean passed;
     private LocalDateTime submittedAt;
+    private int timeTaken;
+    private List<QuestionAnswerDTO> answers;
 }

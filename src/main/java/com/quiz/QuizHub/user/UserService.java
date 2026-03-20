@@ -2,6 +2,8 @@ package com.quiz.QuizHub.user;
 
 import com.quiz.QuizHub.auth.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,7 +37,7 @@ public class UserService implements UserDetailsService {
            throw new UserAlreadyExistException();
         }
         var user = userMapper.toEntity(request);
-        user.setRole(Role.USER);
+        user.setRole(Role.USER );
         user.setStatus(Status.ACTIVE);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userMapper.toDto(userRepository.save(user));
@@ -48,11 +50,10 @@ public class UserService implements UserDetailsService {
         return userMapper.toDto(userRepository.save(user));
     }
 
-    public UserResponse updateProfile(UserRequest request){
+    public UserResponse updateProfile(UserUpdateRequest request){
         Long userId = authService.getCurrentUser().getId();
         var user = findUserById(userId);
-        userMapper.update(request, user);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userMapper.updateProfile(request, user);
         return userMapper.toDto(userRepository.save(user));
     }
 
@@ -70,6 +71,15 @@ public class UserService implements UserDetailsService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public void changePassword(Long id, ChangePasswordRequest request){
+        var user = findUserById(id);
+        if(!passwordEncoder.matches(request.getOldPassword(), user.getPassword())){
+            throw new UnauthorizeAccessException();
+        }
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
     }
 
     @Override
