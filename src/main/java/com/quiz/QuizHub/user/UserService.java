@@ -37,7 +37,7 @@ public class UserService implements UserDetailsService {
            throw new UserAlreadyExistException();
         }
         var user = userMapper.toEntity(request);
-        user.setRole(Role.USER );
+        user.setRole(Role.USER);
         user.setStatus(Status.ACTIVE);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userMapper.toDto(userRepository.save(user));

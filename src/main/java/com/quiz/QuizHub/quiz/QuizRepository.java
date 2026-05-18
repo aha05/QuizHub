@@ -16,4 +16,6 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     List<Question> findAllWithOptionsByQuizId(Long quizId);
 
     List<Quiz> findQuizByCategoryId(Long categoryId);
+
+    Long countByCategoryId(Long categoryId);
 }

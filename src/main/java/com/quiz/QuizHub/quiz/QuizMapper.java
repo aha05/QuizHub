@@ -15,7 +15,5 @@ public interface QuizMapper {
      QuizDto toDto(Quiz quiz);
 
      List<QuizDto> toDto(List<Quiz> quiz);
-
-     Category toEntity(CategoryRequest request);
 }
 

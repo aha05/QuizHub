@@ -1,4 +1,4 @@
-package com.quiz.QuizHub.quiz;
+package com.quiz.QuizHub.support;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,22 +7,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "categories")
-public class Category {
+@Table(name = "help_category")
+public class HelpCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
-
-    @Column(name="description")
-    private String description;
 
     @Column(name="icon")
     private String icon;
-
-    @Column(name="color")
-    private String color;
 }

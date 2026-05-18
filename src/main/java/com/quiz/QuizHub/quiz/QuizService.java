@@ -13,6 +13,7 @@ import java.util.List;
 public class QuizService {
     private final QuizRepository quizRepository;
     private final QuizMapper quizMapper;
+    private final CategoryMapper categoryMapper;
     private final QuestionMapper questionMapper;
     private final CategoryRepository categoryRepository;
 
@@ -57,13 +58,17 @@ public class QuizService {
                 .orElseThrow(() -> new QuizNotFoundException("Quiz not found with id: " + quizId));
     }
 
-    public Category addCategory(CategoryRequest request){
-        var category = quizMapper.toEntity(request);
-        return categoryRepository.save(category);
+    public CategoryResponse addCategory(CategoryRequest request){
+        var category = categoryMapper.toEntity(request);
+        var dto = categoryMapper.toDto(categoryRepository.save(category));
+        if (dto.getQuizzes() == null) {
+            dto.setQuizzes(0L);
+        }
+        return dto;
     }
 
-    public List<Category> addCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryResponse> getCategories() {
+        return categoryRepository.findAllWithQuizCount();
     }
 
     public QuizDto getQuizById(Long quizId) {
